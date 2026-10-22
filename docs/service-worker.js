@@ -1,4 +1,4 @@
-const CACHE_NAME = "jeux-spirituels-offline-v1";
+const CACHE_NAME = "jeux-spirituels-offline-v2";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -45,19 +45,27 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
+      (async () => {
+        try {
+          const response = await fetch(request);
           if (response.ok) {
             const responseCopy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, responseCopy));
+            await caches.open(CACHE_NAME).then((cache) => cache.put(request, responseCopy));
           }
           return response;
-        })
-        .catch(async () => {
-          const cachedPage = await caches.match(request);
+        } catch {
+          const cachedPage = await caches.match(request, { ignoreSearch: true });
           if (cachedPage) return cachedPage;
-          return caches.match("./index.html");
-        })
+
+          const requestedUrl = new URL(request.url);
+          const offlineRoute = requestedUrl.pathname.endsWith("/JeuxRefuge.html")
+            ? "./JeuxRefuge.html"
+            : requestedUrl.pathname.endsWith("/apropos.html")
+              ? "./apropos.html"
+              : "./index.html";
+          return caches.match(offlineRoute);
+        }
+      })()
     );
     return;
   }
