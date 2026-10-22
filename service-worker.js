@@ -10,7 +10,16 @@ const APP_FILES = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES))
+    caches.open(CACHE_NAME).then((cache) => Promise.all(
+      APP_FILES.map(async (file) => {
+        try {
+          const response = await fetch(file, { cache: "reload" });
+          if (response.ok) await cache.put(file, response);
+        } catch {
+          // Keep installation working if an optional asset cannot be downloaded.
+        }
+      })
+    ))
   );
   self.skipWaiting();
 });

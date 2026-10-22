@@ -262,6 +262,27 @@
 
       .install-app[hidden] { display: none; }
 
+      .install-help {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .install-dialog {
+        max-width: min(420px, calc(100% - 32px));
+        border: 2px solid var(--gold);
+        border-radius: 18px;
+        padding: 24px;
+        background: var(--panel-strong);
+        color: var(--text);
+        box-shadow: var(--shadow);
+      }
+
+      .install-dialog::backdrop { background: rgba(0, 0, 0, 0.58); }
+      .install-dialog h2 { margin-top: 0; color: var(--gold-soft); }
+      .install-dialog p { line-height: 1.7; }
+
       .stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -452,7 +473,6 @@
           <a href="apropos.html">À propos</a>
         </div>
         <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">Mode jour</button>
-        <button class="install-app" type="button" hidden>Installer le jeu</button>
         <button class="install-app" type="button" hidden>Installer l’application</button>
       </nav>
     </header>
@@ -502,35 +522,6 @@
     </div>
 
     <script>
-    <script>
-      if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./service-worker.js").catch((error) => {
-            console.error("Inscription du mode hors connexion impossible :", error);
-          });
-        });
-      }
-
-      let installPrompt;
-      const installButton = document.querySelector(".install-app");
-      window.addEventListener("beforeinstallprompt", (event) => {
-        event.preventDefault();
-        installPrompt = event;
-        installButton.hidden = false;
-      });
-
-      installButton.addEventListener("click", async () => {
-        if (!installPrompt) return;
-        installPrompt.prompt();
-        await installPrompt.userChoice;
-        installPrompt = null;
-        installButton.hidden = true;
-      });
-      window.addEventListener("appinstalled", () => {
-        installButton.hidden = true;
-        installPrompt = null;
-      });
-    </script>
       if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("./service-worker.js").catch((error) => {
@@ -560,6 +551,16 @@
         installButton.hidden = true;
         installPrompt = null;
       });
+
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        installButton.hidden = true;
+      } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        installButton.hidden = false;
+        installButton.textContent = "Installation sur iPhone";
+        installButton.addEventListener("click", () => {
+          document.querySelector("#installInstructions").showModal();
+        });
+      }
 
       const games = [
         {
@@ -635,6 +636,11 @@
 
       renderGames();
     </script>
+    <dialog id="installInstructions" class="install-dialog">
+      <h2>Installer Jeux Spirituels</h2>
+      <p>Dans Safari, touche le bouton <strong>Partager</strong>, puis choisis <strong>Sur l’écran d’accueil</strong> et touche <strong>Ajouter</strong>.</p>
+      <button type="button" class="mini-btn primary" onclick="this.closest('dialog').close()">Compris</button>
+    </dialog>
     <script>
       (() => {
         const toggle = document.querySelector("[data-theme-toggle]");
