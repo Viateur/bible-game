@@ -3,55 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bible Grid Quest</title>
+    <title>Jeux : Mon Refuge</title>
     <style>
       :root {
-        --bg: #0b1020;
-        --panel: #121a2e;
-        --panel-2: #1a2442;
-        --text: #edf3ff;
-        --muted: #b9c4df;
-        --gold: #f7c76a;
-        --green: #4ec88d;
-        --red: #ff6b6b;
-        --blue: #70b9ff;
-        --purple: #b99cff;
-        --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+        --bg-1: #07111d;
+        --bg-2: #10192b;
+        --bg-3: #171b34;
+        --panel: rgba(19, 28, 46, 0.88);
+        --panel-strong: rgba(10, 16, 27, 0.94);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #edf4ff;
+        --muted: #b9c7e6;
+        --gold: #f4c86a;
+        --gold-soft: #ffd98d;
+        --green: #57d89b;
+        --green-soft: #88f3c3;
+        --red: #ff7e7e;
+        --blue: #86c8ff;
+        --purple: #c3a2ff;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
       }
 
       * { box-sizing: border-box; }
 
+      html { scroll-behavior: smooth; }
+
       body {
         margin: 0;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #0b1020 0%, #101a2a 35%, #1b1230 100%);
+        background:
+          radial-gradient(circle at top left, rgba(112, 185, 255, 0.15), transparent 30%),
+          radial-gradient(circle at bottom right, rgba(195, 162, 255, 0.14), transparent 28%),
+          linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 38%, var(--bg-3) 100%);
         color: var(--text);
       }
 
       .container {
-        max-width: 1100px;
+        max-width: 1180px;
         margin: 0 auto;
-        padding: 30px 20px 60px;
+        padding: 28px 20px 70px;
       }
 
       header {
-        background: rgba(15, 23, 42, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 22px;
-        padding: 24px 28px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(20, 30, 52, 0.88));
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        padding: 30px 28px;
         box-shadow: var(--shadow);
       }
 
+      header::before {
+        content: "";
+        position: absolute;
+        inset: -25% auto auto -9%;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(244, 200, 106, 0.18), transparent 72%);
+        pointer-events: none;
+      }
+
       h1 {
+        position: relative;
         margin: 0 0 10px;
-        font-size: clamp(2rem, 4vw, 3rem);
-        letter-spacing: 0.03em;
+        font-size: clamp(2.3rem, 5vw, 4rem);
+        letter-spacing: 0.04em;
       }
 
       .subtitle {
+        position: relative;
         margin: 0;
+        max-width: 780px;
         color: var(--muted);
-        line-height: 1.6;
+        line-height: 1.7;
+        font-size: 1.02rem;
+      }
+
+      .subtitle strong {
+        color: var(--gold-soft);
       }
 
       .toolbar {
@@ -234,26 +264,54 @@
       }
 
       .library {
-        margin-top: 30px;
+        margin-top: 34px;
+      }
+
+      .library-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
       }
 
       .library h3 {
-        margin: 0 0 18px;
-        font-size: 1.5rem;
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .version-tag {
+        color: var(--gold-soft);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.74rem;
       }
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: 18px;
       }
 
       .card {
-        background: rgba(18, 26, 46, 0.96);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 18px;
-        padding: 18px 16px;
+        position: relative;
+        background: linear-gradient(180deg, rgba(22, 33, 53, 0.96), rgba(13, 20, 31, 0.96));
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px 16px 16px;
         box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
       }
 
       .card .top {
@@ -289,30 +347,74 @@
       }
 
       .card .verse {
-        color: #f6d091;
-        font-weight: 700;
-        margin-bottom: 10px;
+        margin: 0 0 12px;
+      }
+
+      .verse-link {
+        background: rgba(244, 200, 106, 0.08);
+        border: 1px solid rgba(244, 200, 106, 0.3);
+        color: var(--gold-soft);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.02em;
       }
 
       .card .focus {
-        line-height: 1.5;
+        line-height: 1.6;
         color: var(--muted);
       }
 
+      .verse-tooltip {
+        position: fixed;
+        z-index: 20;
+        max-width: 320px;
+        padding: 15px 16px;
+        border-radius: 16px;
+        background: rgba(9, 14, 21, 0.96);
+        border: 1px solid rgba(244, 200, 106, 0.38);
+        color: var(--text);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.42);
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+      }
+
+      .verse-tooltip.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .verse-tooltip .ref {
+        color: var(--gold-soft);
+        font-weight: 900;
+        margin-bottom: 6px;
+      }
+
+      .verse-tooltip .text {
+        color: var(--text);
+        font-size: 0.95rem;
+      }
+
       @media (max-width: 700px) {
-        .container { padding: 18px 14px 40px; }
-        .game-panel { padding: 18px 16px; }
+        .container { padding: 18px 14px 42px; }
+        .game-panel { padding: 18px 14px; }
         .option { padding: 14px 12px; }
+        .toolbar { flex-direction: column; }
+        .toolbar button { width: 100%; }
       }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>📜 Bible Grid Quest</h1>
+        <h1>Jeux : Mon Refuge</h1>
         <p class="subtitle">
-          Apprends à reconnaître les 17 grilles de lecture du salut et à prier selon la situation.
-          Chaque carte te fait réfléchir à la vérité biblique et à l’autorité de Jésus-Christ.
+          Un atelier spirituel de mémorisation des <strong>17 grilles de lecture du salut</strong>, avec des repères bibliques en version <strong>LSG 21</strong>.
+          Clique sur une référence pour lire rapidement le verset dans une infobulle.
         </p>
 
         <div class="toolbar">
@@ -357,30 +459,35 @@
       </section>
 
       <section class="library" id="librarySection">
-        <h3>Les 17 grilles de lecture du salut</h3>
+        <div class="library-head">
+          <h3>Les 17 grilles de lecture du salut</h3>
+          <span class="version-tag">LSG 21</span>
+        </div>
         <div class="grid" id="gridList"></div>
       </section>
     </div>
 
+    <div id="verseTooltip" class="verse-tooltip" aria-live="polite"></div>
+
     <script>
       const grids = [
-        { id: 1, name: "Judiciaire", problem: "Culpabilité, accusations", image: "L’Avocat / Substitut", verse: "Colossiens 2:14", focus: "Annuler la dette et faire taire l’accusateur." },
-        { id: 2, name: "Économique", problem: "Esclavage, servitude", image: "Le Rédempteur", verse: "1 Pierre 1:18-19", focus: "Proclamer son rachat par le sang de Jésus." },
-        { id: 3, name: "Politique", problem: "Apatride, exclusion", image: "Le Roi des rois", verse: "Philippiens 3:20", focus: "Exercer ses droits de citoyen du Royaume." },
-        { id: 4, name: "Thérapeutique", problem: "Maladie, blessure de l’âme", image: "Le Grand Médecin", verse: "Ésaïe 53:5", focus: "Recevoir la guérison et la consolation." },
-        { id: 5, name: "Agronomique", problem: "Ivraie, amertume, stérilité", image: "Le Bon Semeur / Vigneron", verse: "Jean 15:5", focus: "Déraciner les fausses pensées, porter du fruit." },
-        { id: 6, name: "Ontologique", problem: "Ténèbres, mort spirituelle", image: "La Lumière du monde", verse: "Éphésiens 5:8", focus: "Chasser l’aveuglement, recevoir la vie." },
-        { id: 7, name: "Familiale", problem: "Orphelinat, rejet, abandon", image: "Le Frère Aîné", verse: "Romains 8:15", focus: "Affirmer son identité d’enfant de Dieu." },
-        { id: 8, name: "Nuptiale", problem: "Infidélité, froideur", image: "L’Époux fidèle", verse: "Apocalypse 19:7", focus: "Renouveler son amour et son intimité." },
-        { id: 9, name: "Pédagogique", problem: "Tutelle, immaturité", image: "Le Libérateur de l’héritage", verse: "Galates 4:7", focus: "Réclamer son héritage de fils/fille." },
-        { id: 10, name: "Militaire", problem: "Oppression, peur, blocage", image: "Le Capitaine des armées", verse: "Éphésiens 6:12", focus: "Chasser l’occupant et briser les chaînes." },
-        { id: 11, name: "Sacerdotale", problem: "Impureté, souillure morale", image: "Le Souverain Sacrificateur", verse: "Hébreux 9:14", focus: "Purifier la conscience, sanctifier le temple." },
-        { id: 12, name: "Architecturale", problem: "Instabilité, désordre", image: "La Pierre Angulaire", verse: "1 Pierre 2:5", focus: "Fonder sa vie sur le Rocher inébranlable." },
-        { id: 13, name: "Épique", problem: "Chaos, découragement", image: "Le Second Adam", verse: "2 Corinthiens 5:17", focus: "Proclamer la Nouvelle Création en Christ." },
-        { id: 14, name: "Artistique", problem: "Image brisée, dévalorisation", image: "Le Maître Potier", verse: "Éphésiens 2:10", focus: "Laisser le Potier restaurer sa beauté." },
-        { id: 15, name: "Éducative", problem: "Ignorance, folie du monde", image: "La Sagesse incarnée", verse: "1 Corinthiens 1:30", focus: "Demander le discernement et l’instruction." },
-        { id: 16, name: "Exodique", problem: "Cycles de servitude", image: "Le Nouveau Moïse / Guide", verse: "Colossiens 1:13", focus: "Quitter le passé, entrer dans la Terre Promise." },
-        { id: 17, name: "Vestimentaire", problem: "Honte, humiliation", image: "Celui qui donne l’habit de fête", verse: "Galates 3:27", focus: "Dépouiller la honte, revêtir la justice." },
+        { id: 1, name: "Judiciaire", problem: "Culpabilité, accusations", image: "L’Avocat / Substitut", verse: "Colossiens 2:14", verseText: "LSG 21 : « ayant effacé l’acte de notre dette, qui nous accablait et qui subsistait contre nous, il l’a enlevé, le clouant à la croix. »", focus: "Annuler la dette et faire taire l’accusateur." },
+        { id: 2, name: "Économique", problem: "Esclavage, servitude", image: "Le Rédempteur", verse: "1 Pierre 1:18-19", verseText: "LSG 21 : « vous savez que ce n’est pas par des choses périssables... que vous avez été rachetés... mais par le sang précieux du Christ. »", focus: "Proclamer son rachat par le sang de Jésus." },
+        { id: 3, name: "Politique", problem: "Apatride, exclusion", image: "Le Roi des rois", verse: "Philippiens 3:20", verseText: "LSG 21 : « Notre cité, en effet, est dans les cieux; c’est de là que nous attendons aussi le Sauveur, le Seigneur Jésus-Christ. »", focus: "Exercer ses droits de citoyen du Royaume." },
+        { id: 4, name: "Thérapeutique", problem: "Maladie, blessure de l’âme", image: "Le Grand Médecin", verse: "Ésaïe 53:5", verseText: "LSG 21 : « Il a été blessé à cause de nos révoltes, écrasé à cause de nos fautes... »", focus: "Recevoir la guérison et la consolation." },
+        { id: 5, name: "Agronomique", problem: "Ivraie, amertume, stérilité", image: "Le Bon Semeur / Vigneron", verse: "Jean 15:5", verseText: "LSG 21 : « Je suis le cep, vous êtes les sarments. Celui qui demeure en moi et en qui je demeure porte beaucoup de fruit. »", focus: "Déraciner les fausses pensées, porter du fruit." },
+        { id: 6, name: "Ontologique", problem: "Ténèbres, mort spirituelle", image: "La Lumière du monde", verse: "Éphésiens 5:8", verseText: "LSG 21 : « Vous étiez autrefois ténèbres, mais maintenant vous êtes lumière dans le Seigneur. »", focus: "Chasser l’aveuglement, recevoir la vie." },
+        { id: 7, name: "Familiale", problem: "Orphelinat, rejet, abandon", image: "Le Frère Aîné", verse: "Romains 8:15", verseText: "LSG 21 : « Vous n’avez pas reçu un esprit d’esclavage pour avoir encore peur, mais l’Esprit d’adoption... »", focus: "Affirmer son identité d’enfant de Dieu." },
+        { id: 8, name: "Nuptiale", problem: "Infidélité, froideur", image: "L’Époux fidèle", verse: "Apocalypse 19:7", verseText: "LSG 21 : « Réjouissons-nous et soyons dans l’allégresse, et rendons gloire à Dieu... »", focus: "Renouveler son amour et son intimité." },
+        { id: 9, name: "Pédagogique", problem: "Tutelle, immaturité", image: "Le Libérateur de l’héritage", verse: "Galates 4:7", verseText: "LSG 21 : « Ainsi vous n’êtes plus esclave, mais fils; et si fils, héritier aussi par Dieu. »", focus: "Réclamer son héritage de fils/fille." },
+        { id: 10, name: "Militaire", problem: "Oppression, peur, blocage", image: "Le Capitaine des armées", verse: "Éphésiens 6:12", verseText: "LSG 21 : « Nous n’avons pas à lutter contre la chair et le sang, mais contre les dominations, contre les autorités... »", focus: "Chasser l’occupant et briser les chaînes." },
+        { id: 11, name: "Sacerdotale", problem: "Impureté, souillure morale", image: "Le Souverain Sacrificateur", verse: "Hébreux 9:14", verseText: "LSG 21 : « combien plus le sang du Christ... purifiera notre conscience des œuvres mortes... »", focus: "Purifier la conscience, sanctifier le temple." },
+        { id: 12, name: "Architecturale", problem: "Instabilité, désordre", image: "La Pierre Angulaire", verse: "1 Pierre 2:5", verseText: "LSG 21 : « Vous aussi, comme pierres vivantes, vous édifiez une maison spirituelle... »", focus: "Fonder sa vie sur le Rocher inébranlable." },
+        { id: 13, name: "Épique", problem: "Chaos, découragement", image: "Le Second Adam", verse: "2 Corinthiens 5:17", verseText: "LSG 21 : « Si quelqu’un est en Christ, il est une nouvelle création. Les choses anciennes sont passées... »", focus: "Proclamer la Nouvelle Création en Christ." },
+        { id: 14, name: "Artistique", problem: "Image brisée, dévalorisation", image: "Le Maître Potier", verse: "Éphésiens 2:10", verseText: "LSG 21 : « Nous sommes son ouvrage, créés en Christ Jésus pour de bonnes œuvres... »", focus: "Laisser le Potier restaurer sa beauté." },
+        { id: 15, name: "Éducative", problem: "Ignorance, folie du monde", image: "La Sagesse incarnée", verse: "1 Corinthiens 1:30", verseText: "LSG 21 : « C’est lui qui a été fait pour nous sagesse venant de Dieu... »", focus: "Demander le discernement et l’instruction." },
+        { id: 16, name: "Exodique", problem: "Cycles de servitude", image: "Le Nouveau Moïse / Guide", verse: "Colossiens 1:13", verseText: "LSG 21 : « Dieu nous a arrachés de la puissance des ténèbres et nous a transférés dans le royaume du Fils de son amour. »", focus: "Quitter le passé, entrer dans la Terre Promise." },
+        { id: 17, name: "Vestimentaire", problem: "Honte, humiliation", image: "Celui qui donne l’habit de fête", verse: "Galates 3:27", verseText: "LSG 21 : « Vous tous, en effet, qui avez été baptisés en Christ, vous avez revêtu le Christ. »", focus: "Dépouiller la honte, revêtir la justice." },
       ];
 
       const quizQuestions = [
@@ -418,6 +525,7 @@
       const feedbackBox = document.getElementById("feedbackBox");
       const progressBadge = document.getElementById("progressBadge");
       const modeBadge = document.getElementById("modeBadge");
+      const verseTooltip = document.getElementById("verseTooltip");
 
       function renderLibrary() {
         const gridList = document.getElementById("gridList");
@@ -434,12 +542,43 @@
             <h4>${grid.name}</h4>
             <div class="problem">Problème : ${grid.problem}</div>
             <div class="image">Image de Jésus : ${grid.image}</div>
-            <div class="verse">Verset : ${grid.verse}</div>
+            <div class="verse">
+              <button class="verse-link" data-ref="${grid.verse}" data-text="${grid.verseText}">
+                ${grid.verse}
+              </button>
+            </div>
             <div class="focus">Priorité de prière : ${grid.focus}</div>
           `;
           gridList.appendChild(card);
         });
+
+        document.querySelectorAll(".verse-link").forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const ref = link.dataset.ref;
+            const text = link.dataset.text;
+            showVerseTooltip(ref, text, event);
+          });
+        });
       }
+
+      function showVerseTooltip(ref, text, event) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        verseTooltip.innerHTML = `
+          <div class="ref">${ref}</div>
+          <div class="text">${text}</div>
+        `;
+        verseTooltip.classList.add("visible");
+        verseTooltip.style.left = `${Math.min(rect.left + 20, window.innerWidth - 340)}px`;
+        verseTooltip.style.top = `${Math.max(20, rect.top - 10)}px`;
+      }
+
+      document.addEventListener("click", (event) => {
+        const isVerseLink = event.target.closest(".verse-link");
+        if (!isVerseLink) {
+          verseTooltip.classList.remove("visible");
+        }
+      });
 
       function getRandomOptions(correctName) {
         const wrongs = grids
@@ -591,6 +730,7 @@
         optionsBox.innerHTML = "";
         feedbackBox.className = "feedback";
         feedbackBox.textContent = "";
+        verseTooltip.classList.remove("visible");
       }
 
       document.getElementById("startQuizBtn").addEventListener("click", startQuiz);
