@@ -43,6 +43,55 @@
         padding: 32px 20px 50px;
       }
 
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(10px);
+        background: rgba(8, 15, 22, 0.6);
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 24px;
+      }
+
+      .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold-soft);
+      }
+
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .menu a {
+        color: var(--text);
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 0.92rem;
+        opacity: 0.9;
+      }
+
+      .menu a:hover {
+        background: rgba(255,255,255,0.03);
+        border-color: rgba(255,255,255,0.08);
+      }
+
       .hero {
         position: relative;
         overflow: hidden;
@@ -252,8 +301,31 @@
         opacity: 0.8;
       }
 
+      .promo {
+        margin-top: 32px;
+        background: linear-gradient(135deg, rgba(28, 41, 58, 0.96), rgba(17, 26, 38, 0.96));
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 22px 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .promo h3 {
+        margin: 0 0 10px;
+        font-size: 1.4rem;
+      }
+
+      .promo p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
       @media (max-width: 700px) {
         .container { padding: 20px 14px 40px; }
+        .nav { flex-direction: column; align-items: flex-start; }
+        .menu { width: 100%; }
+        .menu a { flex: 1 1 auto; text-align: center; }
         .hero { padding: 24px 18px; }
         .cta-row { flex-direction: column; }
         .btn { width: 100%; }
@@ -261,12 +333,24 @@
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="topbar">
+      <div class="nav">
+        <div class="brand">Jeux Spirituels</div>
+        <div class="menu">
+          <a href="#accueil">Accueil</a>
+          <a href="#games">Jeux</a>
+          <a href="#a-venir">À venir</a>
+          <a href="apropos.html">À propos</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="accueil">
       <section class="hero">
         <h1>Jeux Spirituels</h1>
         <p class="subtitle">
-          Une plateforme de mini-jeux bibliques et spirituels que tu peux enrichir au fil du temps.
-          Chaque jeu est pensé pour renforcer la foi, la mémoire, l’écoute et la réflexion spirituelle.
+          Une plateforme de mini-jeux bibliques et spirituels, conçue pour apprendre et grandir dans la Parole.
+          Chaque jeu invite à renforcer la foi, la mémoire, l’écoute et la réflexion spirituelle. De nouveaux jeux viendront enrichir la collection au fil du temps.
         </p>
 
         <div class="cta-row">
@@ -290,8 +374,19 @@
         </div>
       </section>
 
+      <section class="promo" id="apropos">
+        <h3>Un espace de jeu pour grandir spirituellement</h3>
+        <p>
+          Cette plateforme est conçue pour abriter plusieurs mini-jeux au fil du temps, chacun ayant une mission : apprendre,
+          mémoriser, méditer et grandir dans la Parole de Dieu.
+        </p>
+      </section>
+
       <h2 class="section-title" id="games">Bibliothèque de jeux</h2>
       <div class="games-grid" id="gamesGrid"></div>
+
+      <h2 class="section-title" id="a-venir">À venir</h2>
+      <div class="games-grid" id="futureGrid"></div>
     </div>
 
     <script>
@@ -315,36 +410,47 @@
       ];
 
       const gamesGrid = document.getElementById("gamesGrid");
+      const futureGrid = document.getElementById("futureGrid");
+
+      function renderCard(game) {
+        const card = document.createElement("article");
+        card.className = "game-card" + (game.type === "future" ? " placeholder" : "");
+
+        const actionHref = game.file === "#" ? "#" : game.file;
+        const actionLabel = game.type === "future" ? "Bientôt" : "Jouer";
+        const secondaryLabel = game.type === "future" ? "Préparer" : "Voir le jeu";
+
+        card.innerHTML = `
+          <div>
+            <span class="pill">${game.status}</span>
+            <h3>${game.title}</h3>
+            <p>${game.description}</p>
+          </div>
+
+          <div class="card-meta">
+            ${game.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+          </div>
+
+          <div class="actions">
+            <a class="mini-btn primary" href="${actionHref}">${actionLabel}</a>
+            <a class="mini-btn secondary" href="${actionHref}">${secondaryLabel}</a>
+          </div>
+        `;
+
+        return card;
+      }
 
       function renderGames() {
         gamesGrid.innerHTML = "";
+        futureGrid.innerHTML = "";
 
         games.forEach((game) => {
-          const card = document.createElement("article");
-          card.className = "game-card" + (game.type === "future" ? " placeholder" : "");
-
-          const actionHref = game.file === "#" ? "#" : game.file;
-          const actionLabel = game.type === "future" ? "Bientôt" : "Jouer";
-          const secondaryLabel = game.type === "future" ? "Préparer" : "Voir le jeu";
-
-          card.innerHTML = `
-            <div>
-              <span class="pill">${game.status}</span>
-              <h3>${game.title}</h3>
-              <p>${game.description}</p>
-            </div>
-
-            <div class="card-meta">
-              ${game.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-            </div>
-
-            <div class="actions">
-              <a class="mini-btn primary" href="${actionHref}">${actionLabel}</a>
-              <a class="mini-btn secondary" href="${actionHref}">${secondaryLabel}</a>
-            </div>
-          `;
-
-          gamesGrid.appendChild(card);
+          const card = renderCard(game);
+          if (game.type === "future") {
+            futureGrid.appendChild(card);
+          } else {
+            gamesGrid.appendChild(card);
+          }
         });
 
         const gamesCount = document.getElementById("gamesCount");

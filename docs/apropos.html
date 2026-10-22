@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Découvrez la mission et les valeurs de Jeux Spirituels, une plateforme de mini-jeux bibliques pour apprendre et grandir dans la Parole." />
+    <title>À propos — Jeux Spirituels</title>
+    <style>
+      :root {
+        --bg-1: #06121b;
+        --bg-2: #0d1d2e;
+        --bg-3: #171b34;
+        --line: rgba(255, 255, 255, 0.09);
+        --text: #edf4ff;
+        --muted: #bfd0ea;
+        --gold: #f4c86a;
+        --gold-soft: #ffd98d;
+        --blue: #8cc8ff;
+        --shadow: 0 26px 60px rgba(0, 0, 0, 0.32);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at 8% 0%, rgba(140, 200, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 100% 70%, rgba(199, 167, 255, 0.13), transparent 30%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+      }
+
+      a { color: inherit; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        border-bottom: 1px solid var(--line);
+        background: rgba(8, 15, 22, 0.78);
+        backdrop-filter: blur(14px);
+      }
+      .nav {
+        width: min(1120px, calc(100% - 36px));
+        min-height: 72px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .brand {
+        color: var(--gold-soft);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .menu { display: flex; flex-wrap: wrap; gap: 8px; }
+      .menu a {
+        padding: 9px 12px;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        text-decoration: none;
+      }
+      .menu a:hover, .menu a[aria-current="page"] {
+        border-color: var(--line);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+      }
+      main { width: min(1000px, calc(100% - 36px)); margin: 0 auto; padding: 58px 0 72px; }
+      .eyebrow {
+        display: inline-flex;
+        padding: 7px 11px;
+        border: 1px solid rgba(244, 200, 106, 0.3);
+        border-radius: 999px;
+        background: rgba(244, 200, 106, 0.08);
+        color: var(--gold-soft);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(28px, 6vw, 62px);
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background: linear-gradient(135deg, rgba(12, 21, 33, 0.97), rgba(19, 31, 50, 0.9));
+        box-shadow: var(--shadow);
+      }
+      h1 { position: relative; z-index: 1; max-width: 700px; margin: 18px 0 14px; font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1.03; }
+      .lead { position: relative; z-index: 1; max-width: 700px; margin: 0; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 1.8; }
+      .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
+      .panel {
+        padding: 25px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(19, 29, 43, 0.94), rgba(12, 18, 29, 0.94));
+        box-shadow: var(--shadow);
+      }
+      .panel.wide { grid-column: 1 / -1; }
+      h2 { margin: 16px 0 10px; font-size: 1.45rem; }
+      .panel p { margin: 0; color: var(--muted); line-height: 1.75; }
+      .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+      .value { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255, 255, 255, 0.025); }
+      .value strong { display: block; margin-bottom: 6px; color: var(--gold-soft); }
+      .value span { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+      .closing { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 22px; padding: 24px; border: 1px solid rgba(244, 200, 106, 0.22); border-radius: 22px; background: linear-gradient(110deg, rgba(244, 200, 106, 0.1), rgba(140, 200, 255, 0.06)); }
+      .closing p { margin: 0; color: var(--muted); line-height: 1.7; }
+      .btn { flex: 0 0 auto; display: inline-flex; justify-content: center; padding: 13px 17px; border-radius: 13px; background: linear-gradient(135deg, var(--gold), #f0b63c); color: #181614; font-weight: 800; text-decoration: none; }
+      footer { padding: 22px 18px; border-top: 1px solid var(--line); color: var(--muted); text-align: center; font-size: 0.88rem; }
+      @media (max-width: 700px) {
+        .nav { align-items: flex-start; flex-direction: column; justify-content: center; padding: 14px 0; }
+        .menu { width: 100%; }
+        .menu a { flex: 1 1 auto; text-align: center; }
+        main { padding-top: 30px; }
+        .content-grid, .values { grid-template-columns: 1fr; }
+        .panel.wide { grid-column: auto; }
+        .closing { align-items: stretch; flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="brand" href="index.html">Jeux Spirituels</a>
+        <div class="menu">
+          <a href="index.html">Accueil</a>
+          <a href="index.html#games">Les jeux</a>
+          <a href="index.html#a-venir">À venir</a>
+          <a href="apropos.html" aria-current="page">À propos</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <span class="eyebrow">Notre démarche</span>
+        <h1>La foi s’apprend aussi en jouant.</h1>
+        <p class="lead">
+          Jeux Spirituels est un espace de mini-jeux bibliques conçu pour rendre la découverte de la Parole vivante,
+          accessible et participative. On y joue pour apprendre, réfléchir et retenir — sans perdre de vue l’essentiel.
+        </p>
+      </section>
+
+      <section class="content-grid" aria-label="Présentation du projet">
+        <article class="panel">
+          <h2>Notre mission</h2>
+          <p>
+            Transformer l’étude biblique en une expérience interactive. Chaque jeu propose une façon simple de revoir
+            des thèmes, des références et des enseignements, à son rythme.
+          </p>
+        </article>
+        <article class="panel">
+          <h2>Pour qui ?</h2>
+          <p>
+            Pour toute personne qui souhaite explorer la Bible de manière ludique : seul, en famille, entre amis,
+            en groupe de jeunes ou dans un cadre d’étude.
+          </p>
+        </article>
+        <article class="panel wide">
+          <h2>Ce qui nous guide</h2>
+          <p>Le projet grandit jeu après jeu, avec une intention constante : proposer un contenu utile, clair et accueillant.</p>
+          <div class="values">
+            <div class="value"><strong>La Parole</strong><span>Des jeux ancrés dans les textes bibliques et leurs références.</span></div>
+            <div class="value"><strong>La simplicité</strong><span>Une prise en main facile, sur ordinateur comme sur téléphone.</span></div>
+            <div class="value"><strong>La progression</strong><span>De nouveaux thèmes et formats pourront enrichir la bibliothèque.</span></div>
+          </div>
+        </article>
+        <article class="panel wide">
+          <h2>Un projet qui évolue</h2>
+          <p>
+            La bibliothèque commence avec « Jeux : Mon Refuge », un quiz autour des grilles de lecture du salut,
+            avec des références bibliques en version LSG 21. D’autres jeux pourront rejoindre la plateforme au fil du temps.
+          </p>
+        </article>
+      </section>
+
+      <section class="closing">
+        <p><strong>Envie de commencer ?</strong><br />Explore le jeu disponible et découvre la bibliothèque en construction.</p>
+        <a class="btn" href="JeuxRefuge.html">Découvrir le jeu</a>
+      </section>
+    </main>
+
+    <footer>Jeux Spirituels · Apprendre, réfléchir et grandir dans la Parole.</footer>
+  </body>
+</html>
