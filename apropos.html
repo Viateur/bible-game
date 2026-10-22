@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        if (localStorage.getItem("jeux-spirituels-theme") === "light") {
+          document.documentElement.dataset.theme = "light";
+        }
+      } catch {}
+    </script>
     <meta name="description" content="Découvrez la mission et les valeurs de Jeux Spirituels, une plateforme de mini-jeux bibliques pour apprendre et grandir dans la Parole." />
     <title>À propos — Jeux Spirituels</title>
     <style>
@@ -75,6 +82,18 @@
         background: rgba(227, 27, 35, 0.24);
         color: var(--gold-soft);
       }
+      .theme-toggle {
+        flex: 0 0 auto;
+        padding: 9px 12px;
+        border: 1px solid var(--gold);
+        border-radius: 10px;
+        background: rgba(242, 183, 5, 0.12);
+        color: var(--gold-soft);
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
       main { width: min(1000px, calc(100% - 36px)); margin: 0 auto; padding: 58px 0 72px; }
       .eyebrow {
         display: inline-flex;
@@ -129,9 +148,64 @@
         .panel.wide { grid-column: auto; }
         .closing { align-items: stretch; flex-direction: column; }
       }
+
+      body[data-theme="light"] {
+        --bg-1: #fffdf8;
+        --bg-2: #fff8e8;
+        --bg-3: #f2f2f0;
+        --line: rgba(30, 30, 30, 0.14);
+        --text: #191919;
+        --muted: #55534f;
+        --gold: #b8860b;
+        --gold-soft: #8a6500;
+        --red: #c9151e;
+        --gray: #777773;
+        --shadow: 0 18px 42px rgba(35, 25, 8, 0.12);
+      }
+
+      body[data-theme="light"] {
+        background:
+          radial-gradient(circle at 8% 0%, rgba(255, 213, 92, 0.28), transparent 27%),
+          radial-gradient(circle at 95% 72%, rgba(201, 21, 30, 0.12), transparent 26%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+      }
+
+      body[data-theme="light"] .topbar { background: rgba(255, 255, 255, 0.94); }
+      body[data-theme="light"] .brand { color: var(--gold-soft); text-shadow: none; }
+      body[data-theme="light"] .menu a { color: #292725; background: rgba(255, 255, 255, 0.78); }
+      body[data-theme="light"] .menu a:hover, body[data-theme="light"] .menu a[aria-current="page"] { background: #fff1f0; color: #a10e16; }
+      body[data-theme="light"] .theme-toggle { background: #fff2c6; color: #765500; }
+      body[data-theme="light"] .hero { background: linear-gradient(125deg, #ffffff, #fff8e7); }
+      body[data-theme="light"] h1, body[data-theme="light"] h2 { color: #29210c; }
+      body[data-theme="light"] .eyebrow { background: #fff2c6; border-color: #e3bf4f; color: #765500; }
+      body[data-theme="light"] .panel { background: linear-gradient(145deg, #ffffff, #fffaf0); border-color: rgba(184, 134, 11, 0.32); }
+      body[data-theme="light"] .panel p, body[data-theme="light"] .lead, body[data-theme="light"] .value span, body[data-theme="light"] .closing p { color: #55534f; }
+      body[data-theme="light"] .value { background: #f8f6f0; border-color: #e4dfd2; }
+      body[data-theme="light"] .value strong { color: #765500; }
+      body[data-theme="light"] .closing { background: linear-gradient(110deg, #fff4ce, #fff0ef); border-color: rgba(184, 134, 11, 0.38); }
+      body[data-theme="light"] .btn { background: linear-gradient(135deg, #ffe27a, #efb91c); color: #241900; box-shadow: 0 8px 20px rgba(184, 134, 11, 0.2); }
+      body[data-theme="light"] footer { color: #66615a; }
+
+      .theme-toggle {
+        flex: 0 0 auto;
+        padding: 9px 12px;
+        border: 1px solid var(--gold);
+        border-radius: 10px;
+        background: rgba(242, 183, 5, 0.12);
+        color: var(--gold-soft);
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
+    <script>
+      if (document.documentElement.dataset.theme) {
+        document.body.dataset.theme = document.documentElement.dataset.theme;
+      }
+    </script>
     <header class="topbar">
       <nav class="nav" aria-label="Navigation principale">
         <a class="brand" href="index.html">Jeux Spirituels</a>
@@ -141,6 +215,7 @@
           <a href="index.html#a-venir">À venir</a>
           <a href="apropos.html" aria-current="page">À propos</a>
         </div>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">Mode jour</button>
       </nav>
     </header>
 
@@ -194,5 +269,27 @@
     </main>
 
     <footer>Jeux Spirituels · Apprendre, réfléchir et grandir dans la Parole.</footer>
+    <script>
+      (() => {
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const root = document.body;
+        const storageKey = "jeux-spirituels-theme";
+
+        function updateToggle() {
+          const isLight = root.dataset.theme === "light";
+          toggle.textContent = isLight ? "Mode nuit" : "Mode jour";
+          toggle.setAttribute("aria-pressed", String(isLight));
+          toggle.setAttribute("aria-label", isLight ? "Activer le mode nuit" : "Activer le mode jour");
+        }
+
+        updateToggle();
+        toggle.addEventListener("click", () => {
+          const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+          root.dataset.theme = nextTheme;
+          try { localStorage.setItem(storageKey, nextTheme); } catch {}
+          updateToggle();
+        });
+      })();
+    </script>
   </body>
 </html>
