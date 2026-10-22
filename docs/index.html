@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeux Spirituels</title>
+    <style>
+      :root {
+        --bg-1: #06121b;
+        --bg-2: #0d1d2e;
+        --bg-3: #171b34;
+        --panel: rgba(17, 27, 42, 0.84);
+        --panel-strong: rgba(11, 18, 26, 0.96);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #edf4ff;
+        --muted: #bfd0ea;
+        --gold: #f4c86a;
+        --gold-soft: #ffd98d;
+        --green: #61db9a;
+        --blue: #8cc8ff;
+        --purple: #c7a7ff;
+        --shadow: 0 26px 60px rgba(0, 0, 0, 0.38);
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(140, 200, 255, 0.16), transparent 25%),
+          radial-gradient(circle at bottom right, rgba(199, 167, 255, 0.14), transparent 28%),
+          linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 42%, var(--bg-3) 100%);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 20px 50px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(12, 21, 33, 0.96), rgba(19, 31, 50, 0.92));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 34px 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(244, 200, 106, 0.17), transparent 70%);
+        top: -60px;
+        right: -40px;
+      }
+
+      h1 {
+        position: relative;
+        margin: 0;
+        font-size: clamp(2.4rem, 6vw, 4.5rem);
+        letter-spacing: 0.03em;
+      }
+
+      .subtitle {
+        position: relative;
+        margin: 18px 0 0;
+        max-width: 780px;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.05rem;
+      }
+
+      .cta-row {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        font-weight: 800;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, var(--gold), #f0b63c);
+        color: #181614;
+        box-shadow: 0 14px 24px rgba(244, 200, 106, 0.26);
+      }
+
+      .btn.secondary {
+        background: rgba(140, 200, 255, 0.08);
+        border-color: rgba(140, 200, 255, 0.26);
+        color: var(--text);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .stat {
+        background: linear-gradient(180deg, rgba(20, 31, 47, 0.96), rgba(13, 20, 31, 0.96));
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px 16px;
+        text-align: center;
+      }
+
+      .stat .label {
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+
+      .stat .value {
+        margin-top: 10px;
+        font-size: clamp(1.7rem, 3vw, 2.4rem);
+        font-weight: 900;
+      }
+
+      .section-title {
+        margin: 36px 0 18px;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .game-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+        background: linear-gradient(180deg, rgba(19, 29, 43, 0.97), rgba(12, 18, 29, 0.97));
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 20px 18px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .game-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(244, 200, 106, 0.09);
+        border: 1px solid rgba(244, 200, 106, 0.32);
+        color: var(--gold-soft);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .game-card h3 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .game-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        display: inline-flex;
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: rgba(140, 200, 255, 0.08);
+        border: 1px solid rgba(140, 200, 255, 0.2);
+        color: #dfeeff;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .mini-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.92rem;
+      }
+
+      .mini-btn.primary {
+        background: linear-gradient(135deg, var(--gold), #f0b63c);
+        color: #1a170f;
+      }
+
+      .mini-btn.secondary {
+        border: 1px solid rgba(255,255,255,0.12);
+        color: var(--text);
+        background: rgba(255,255,255,0.02);
+      }
+
+      .placeholder {
+        opacity: 0.8;
+      }
+
+      @media (max-width: 700px) {
+        .container { padding: 20px 14px 40px; }
+        .hero { padding: 24px 18px; }
+        .cta-row { flex-direction: column; }
+        .btn { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="hero">
+        <h1>Jeux Spirituels</h1>
+        <p class="subtitle">
+          Une plateforme de mini-jeux bibliques et spirituels que tu peux enrichir au fil du temps.
+          Chaque jeu est pensé pour renforcer la foi, la mémoire, l’écoute et la réflexion spirituelle.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn primary" href="JeuxRefuge.html">Jouer au jeu actuel</a>
+          <a class="btn secondary" href="#games">Voir tous les jeux</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Jeux</div>
+            <div class="value" id="gamesCount">1</div>
+          </div>
+          <div class="stat">
+            <div class="label">Disponible</div>
+            <div class="value" id="onlineCount">1</div>
+          </div>
+          <div class="stat">
+            <div class="label">À venir</div>
+            <div class="value" id="soonCount">0</div>
+          </div>
+        </div>
+      </section>
+
+      <h2 class="section-title" id="games">Bibliothèque de jeux</h2>
+      <div class="games-grid" id="gamesGrid"></div>
+    </div>
+
+    <script>
+      const games = [
+        {
+          title: "Jeux : Mon Refuge",
+          file: "JeuxRefuge.html",
+          description: "Quiz spirituel sur les 17 grilles de lecture du salut avec références bibliques en version LSG 21.",
+          tags: ["Quiz", "Bible", "Délivrance", "LSG 21"],
+          status: "Disponible",
+          type: "active"
+        },
+        {
+          title: "Nouveau jeu",
+          file: "#",
+          description: "Crée bientôt un autre mini-jeu : mémoire, citations, combat spirituel, devinette, ou thème biblique.",
+          tags: ["À venir", "Template"],
+          status: "À venir",
+          type: "future"
+        }
+      ];
+
+      const gamesGrid = document.getElementById("gamesGrid");
+
+      function renderGames() {
+        gamesGrid.innerHTML = "";
+
+        games.forEach((game) => {
+          const card = document.createElement("article");
+          card.className = "game-card" + (game.type === "future" ? " placeholder" : "");
+
+          const actionHref = game.file === "#" ? "#" : game.file;
+          const actionLabel = game.type === "future" ? "Bientôt" : "Jouer";
+          const secondaryLabel = game.type === "future" ? "Préparer" : "Voir le jeu";
+
+          card.innerHTML = `
+            <div>
+              <span class="pill">${game.status}</span>
+              <h3>${game.title}</h3>
+              <p>${game.description}</p>
+            </div>
+
+            <div class="card-meta">
+              ${game.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+            </div>
+
+            <div class="actions">
+              <a class="mini-btn primary" href="${actionHref}">${actionLabel}</a>
+              <a class="mini-btn secondary" href="${actionHref}">${secondaryLabel}</a>
+            </div>
+          `;
+
+          gamesGrid.appendChild(card);
+        });
+
+        const gamesCount = document.getElementById("gamesCount");
+        const onlineCount = document.getElementById("onlineCount");
+        const soonCount = document.getElementById("soonCount");
+
+        gamesCount.textContent = String(games.length);
+        onlineCount.textContent = String(games.filter((g) => g.type === "active").length);
+        soonCount.textContent = String(games.filter((g) => g.type === "future").length);
+      }
+
+      renderGames();
+    </script>
+  </body>
+</html>

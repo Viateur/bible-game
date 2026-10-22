@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeux : Mon Refuge</title>
+    <style>
+      :root {
+        --bg-1: #07111d;
+        --bg-2: #10192b;
+        --bg-3: #171b34;
+        --panel: rgba(19, 28, 46, 0.88);
+        --panel-strong: rgba(10, 16, 27, 0.94);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #edf4ff;
+        --muted: #b9c7e6;
+        --gold: #f4c86a;
+        --gold-soft: #ffd98d;
+        --green: #57d89b;
+        --green-soft: #88f3c3;
+        --red: #ff7e7e;
+        --blue: #86c8ff;
+        --purple: #c3a2ff;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(112, 185, 255, 0.15), transparent 30%),
+          radial-gradient(circle at bottom right, rgba(195, 162, 255, 0.14), transparent 28%),
+          linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 38%, var(--bg-3) 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px 70px;
+      }
+
+      header {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(20, 30, 52, 0.88));
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        padding: 30px 28px;
+        box-shadow: var(--shadow);
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        inset: -25% auto auto -9%;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(244, 200, 106, 0.18), transparent 72%);
+        pointer-events: none;
+      }
+
+      h1 {
+        position: relative;
+        margin: 0 0 10px;
+        font-size: clamp(2.3rem, 5vw, 4rem);
+        letter-spacing: 0.04em;
+      }
+
+      .subtitle {
+        position: relative;
+        margin: 0;
+        max-width: 780px;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.02rem;
+      }
+
+      .subtitle strong {
+        color: var(--gold-soft);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      .primary {
+        background: linear-gradient(135deg, var(--gold), #f4b949);
+        color: #1d1d1d;
+        box-shadow: 0 10px 20px rgba(247, 199, 106, 0.25);
+      }
+
+      .secondary {
+        background: rgba(112, 185, 255, 0.12);
+        border: 1px solid rgba(112, 185, 255, 0.35);
+        color: var(--text);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .stat {
+        background: rgba(18, 26, 46, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 18px 16px;
+        text-align: center;
+      }
+
+      .stat .label {
+        color: var(--muted);
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .stat .value {
+        margin-top: 8px;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 800;
+      }
+
+      .game-panel {
+        margin-top: 30px;
+        background: rgba(18, 26, 46, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 26px;
+      }
+
+      .question-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(185, 156, 255, 0.12);
+        border: 1px solid rgba(185, 156, 255, 0.25);
+        color: #e9e2ff;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .question-box {
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 20px;
+      }
+
+      .question-box h2 {
+        margin: 0 0 12px;
+        font-size: clamp(1.3rem, 2.2vw, 2rem);
+      }
+
+      .question-box p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .options {
+        display: grid;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .option {
+        width: 100%;
+        text-align: left;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .option .letter {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(112, 185, 255, 0.14);
+        border: 1px solid rgba(112,185,255,0.32);
+        font-weight: 800;
+      }
+
+      .option .text {
+        flex: 1;
+      }
+
+      .option.correct {
+        background: rgba(78, 200, 141, 0.12);
+        border-color: rgba(78, 200, 141, 0.45);
+      }
+
+      .option.wrong {
+        background: rgba(255, 107, 107, 0.10);
+        border-color: rgba(255, 107, 107, 0.45);
+      }
+
+      .feedback {
+        margin-top: 22px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.02);
+        color: var(--text);
+        display: none;
+      }
+
+      .feedback.show {
+        display: block;
+      }
+
+      .feedback.correct {
+        border-color: rgba(78, 200, 141, 0.5);
+        background: rgba(78, 200, 141, 0.10);
+      }
+
+      .feedback.wrong {
+        border-color: rgba(255, 107, 107, 0.5);
+        background: rgba(255, 107, 107, 0.10);
+      }
+
+      .library {
+        margin-top: 34px;
+      }
+
+      .library-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .library h3 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .version-tag {
+        color: var(--gold-soft);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.74rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        position: relative;
+        background: linear-gradient(180deg, rgba(22, 33, 53, 0.96), rgba(13, 20, 31, 0.96));
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px 16px 16px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      }
+
+      .card .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .card .number {
+        font-size: 0.8rem;
+        color: var(--gold);
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .card h4 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .card .problem {
+        color: var(--muted);
+        margin: 10px 0 8px;
+        font-size: 0.95rem;
+      }
+
+      .card .image {
+        color: #d7edff;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .card .verse {
+        margin: 0 0 12px;
+      }
+
+      .verse-link {
+        background: rgba(244, 200, 106, 0.08);
+        border: 1px solid rgba(244, 200, 106, 0.3);
+        color: var(--gold-soft);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.02em;
+      }
+
+      .card .focus {
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .verse-tooltip {
+        position: fixed;
+        z-index: 20;
+        max-width: 320px;
+        padding: 15px 16px;
+        border-radius: 16px;
+        background: rgba(9, 14, 21, 0.96);
+        border: 1px solid rgba(244, 200, 106, 0.38);
+        color: var(--text);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.42);
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+      }
+
+      .verse-tooltip.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .verse-tooltip .ref {
+        color: var(--gold-soft);
+        font-weight: 900;
+        margin-bottom: 6px;
+      }
+
+      .verse-tooltip .text {
+        color: var(--text);
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 700px) {
+        .container { padding: 18px 14px 42px; }
+        .game-panel { padding: 18px 14px; }
+        .option { padding: 14px 12px; }
+        .toolbar { flex-direction: column; }
+        .toolbar button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Jeux : Mon Refuge</h1>
+        <p class="subtitle">
+          Un atelier spirituel de mémorisation des <strong>17 grilles de lecture du salut</strong>, avec des repères bibliques en version <strong>LSG 21</strong>.
+          Clique sur une référence pour lire rapidement le verset dans une infobulle.
+        </p>
+
+        <div class="toolbar">
+          <button class="primary" id="startQuizBtn">Démarrer le quiz</button>
+          <button class="secondary" id="showCardsBtn">Voir toutes les grilles</button>
+          <button class="secondary" id="resetBtn">Recommencer</button>
+        </div>
+      </header>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Score</div>
+          <div class="value" id="scoreValue">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Bonnes</div>
+          <div class="value" id="correctValue">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Questions</div>
+          <div class="value" id="questionValue">0/10</div>
+        </div>
+        <div class="stat">
+          <div class="label">Vies</div>
+          <div class="value" id="livesValue">3</div>
+        </div>
+      </div>
+
+      <section class="game-panel" id="gamePanel">
+        <div class="question-meta">
+          <span class="badge" id="modeBadge">Mode : Quiz</span>
+          <span class="badge" id="progressBadge">Index 0</span>
+        </div>
+
+        <div class="question-box">
+          <h2 id="questionTitle">Prêt à apprendre ?</h2>
+          <p id="questionText">Clique sur “Démarrer le quiz” pour commencer. Tu verras une situation spirituelle et tu devras identifier la grille biblique la plus adaptée.</p>
+        </div>
+
+        <div class="options" id="optionsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+      </section>
+
+      <section class="library" id="librarySection">
+        <div class="library-head">
+          <h3>Les 17 grilles de lecture du salut</h3>
+          <span class="version-tag">LSG 21</span>
+        </div>
+        <div class="grid" id="gridList"></div>
+      </section>
+    </div>
+
+    <div id="verseTooltip" class="verse-tooltip" aria-live="polite"></div>
+
+    <script>
+      const grids = [
+        { id: 1, name: "Judiciaire", problem: "Culpabilité, accusations", image: "L’Avocat / Substitut", verse: "Colossiens 2:14", verseText: "LSG 21 : « ayant effacé l’acte de notre dette, qui nous accablait et qui subsistait contre nous, il l’a enlevé, le clouant à la croix. »", focus: "Annuler la dette et faire taire l’accusateur." },
+        { id: 2, name: "Économique", problem: "Esclavage, servitude", image: "Le Rédempteur", verse: "1 Pierre 1:18-19", verseText: "LSG 21 : « vous savez que ce n’est pas par des choses périssables... que vous avez été rachetés... mais par le sang précieux du Christ. »", focus: "Proclamer son rachat par le sang de Jésus." },
+        { id: 3, name: "Politique", problem: "Apatride, exclusion", image: "Le Roi des rois", verse: "Philippiens 3:20", verseText: "LSG 21 : « Notre cité, en effet, est dans les cieux; c’est de là que nous attendons aussi le Sauveur, le Seigneur Jésus-Christ. »", focus: "Exercer ses droits de citoyen du Royaume." },
+        { id: 4, name: "Thérapeutique", problem: "Maladie, blessure de l’âme", image: "Le Grand Médecin", verse: "Ésaïe 53:5", verseText: "LSG 21 : « Il a été blessé à cause de nos révoltes, écrasé à cause de nos fautes... »", focus: "Recevoir la guérison et la consolation." },
+        { id: 5, name: "Agronomique", problem: "Ivraie, amertume, stérilité", image: "Le Bon Semeur / Vigneron", verse: "Jean 15:5", verseText: "LSG 21 : « Je suis le cep, vous êtes les sarments. Celui qui demeure en moi et en qui je demeure porte beaucoup de fruit. »", focus: "Déraciner les fausses pensées, porter du fruit." },
+        { id: 6, name: "Ontologique", problem: "Ténèbres, mort spirituelle", image: "La Lumière du monde", verse: "Éphésiens 5:8", verseText: "LSG 21 : « Vous étiez autrefois ténèbres, mais maintenant vous êtes lumière dans le Seigneur. »", focus: "Chasser l’aveuglement, recevoir la vie." },
+        { id: 7, name: "Familiale", problem: "Orphelinat, rejet, abandon", image: "Le Frère Aîné", verse: "Romains 8:15", verseText: "LSG 21 : « Vous n’avez pas reçu un esprit d’esclavage pour avoir encore peur, mais l’Esprit d’adoption... »", focus: "Affirmer son identité d’enfant de Dieu." },
+        { id: 8, name: "Nuptiale", problem: "Infidélité, froideur", image: "L’Époux fidèle", verse: "Apocalypse 19:7", verseText: "LSG 21 : « Réjouissons-nous et soyons dans l’allégresse, et rendons gloire à Dieu... »", focus: "Renouveler son amour et son intimité." },
+        { id: 9, name: "Pédagogique", problem: "Tutelle, immaturité", image: "Le Libérateur de l’héritage", verse: "Galates 4:7", verseText: "LSG 21 : « Ainsi vous n’êtes plus esclave, mais fils; et si fils, héritier aussi par Dieu. »", focus: "Réclamer son héritage de fils/fille." },
+        { id: 10, name: "Militaire", problem: "Oppression, peur, blocage", image: "Le Capitaine des armées", verse: "Éphésiens 6:12", verseText: "LSG 21 : « Nous n’avons pas à lutter contre la chair et le sang, mais contre les dominations, contre les autorités... »", focus: "Chasser l’occupant et briser les chaînes." },
+        { id: 11, name: "Sacerdotale", problem: "Impureté, souillure morale", image: "Le Souverain Sacrificateur", verse: "Hébreux 9:14", verseText: "LSG 21 : « combien plus le sang du Christ... purifiera notre conscience des œuvres mortes... »", focus: "Purifier la conscience, sanctifier le temple." },
+        { id: 12, name: "Architecturale", problem: "Instabilité, désordre", image: "La Pierre Angulaire", verse: "1 Pierre 2:5", verseText: "LSG 21 : « Vous aussi, comme pierres vivantes, vous édifiez une maison spirituelle... »", focus: "Fonder sa vie sur le Rocher inébranlable." },
+        { id: 13, name: "Épique", problem: "Chaos, découragement", image: "Le Second Adam", verse: "2 Corinthiens 5:17", verseText: "LSG 21 : « Si quelqu’un est en Christ, il est une nouvelle création. Les choses anciennes sont passées... »", focus: "Proclamer la Nouvelle Création en Christ." },
+        { id: 14, name: "Artistique", problem: "Image brisée, dévalorisation", image: "Le Maître Potier", verse: "Éphésiens 2:10", verseText: "LSG 21 : « Nous sommes son ouvrage, créés en Christ Jésus pour de bonnes œuvres... »", focus: "Laisser le Potier restaurer sa beauté." },
+        { id: 15, name: "Éducative", problem: "Ignorance, folie du monde", image: "La Sagesse incarnée", verse: "1 Corinthiens 1:30", verseText: "LSG 21 : « C’est lui qui a été fait pour nous sagesse venant de Dieu... »", focus: "Demander le discernement et l’instruction." },
+        { id: 16, name: "Exodique", problem: "Cycles de servitude", image: "Le Nouveau Moïse / Guide", verse: "Colossiens 1:13", verseText: "LSG 21 : « Dieu nous a arrachés de la puissance des ténèbres et nous a transférés dans le royaume du Fils de son amour. »", focus: "Quitter le passé, entrer dans la Terre Promise." },
+        { id: 17, name: "Vestimentaire", problem: "Honte, humiliation", image: "Celui qui donne l’habit de fête", verse: "Galates 3:27", verseText: "LSG 21 : « Vous tous, en effet, qui avez été baptisés en Christ, vous avez revêtu le Christ. »", focus: "Dépouiller la honte, revêtir la justice." },
+      ];
+
+      const quizQuestions = [
+        { situation: "Tu te sens acculé par des pensées de culpabilité et tu entends des accusations dans ta tête.", answer: "Judiciaire" },
+        { situation: "Tu sens que ton âme est épuisée et que tu as besoin de guérison intérieure et de consolation.", answer: "Thérapeutique" },
+        { situation: "Tu subis de la peur, des blocages et l’impression qu’un ennemi s’oppose à ta marche.", answer: "Militaire" },
+        { situation: "Tu te sens rejeté, orphelin, sans sécurité dans ton identité de fils de Dieu.", answer: "Familiale" },
+        { situation: "Tu traverses un cycle d’esclavage spirituel et tu veux sortir du passé pour entrer dans la liberté.", answer: "Exodique" },
+        { situation: "Tu as l’impression d’être couvert de honte, sans dignité, et tu veux être revêtu de justice.", answer: "Vestimentaire" },
+        { situation: "Tu traverses le chaos, le découragement et tu veux retrouver un nouveau commencement en Christ.", answer: "Épique" },
+        { situation: "Tu sens des faux semis, des pensées amères et des difficultés à porter du fruit spirituel.", answer: "Agronomique" },
+        { situation: "Tu te sens perdu, sans comprendre la voie à suivre et tu veux la sagesse de Dieu.", answer: "Éducative" },
+        { situation: "Tu veux retrouver une base solide pour ta vie, car tout semble instable ou désordonné.", answer: "Architecturale" },
+        { situation: "Tu as besoin de purifier ton cœur et de te libérer d’une souillure spirituelle.", answer: "Sacerdotale" },
+        { situation: "Tu veux te souvenir que tu es un citoyen du Royaume et que tu as des droits en Christ.", answer: "Politique" }
+      ];
+
+      const state = {
+        score: 0,
+        correct: 0,
+        currentIndex: 0,
+        lives: 3,
+        quizStarted: false,
+        hasAnswered: false,
+        currentQuestion: null,
+      };
+
+      const scoreValue = document.getElementById("scoreValue");
+      const correctValue = document.getElementById("correctValue");
+      const questionValue = document.getElementById("questionValue");
+      const livesValue = document.getElementById("livesValue");
+      const questionTitle = document.getElementById("questionTitle");
+      const questionText = document.getElementById("questionText");
+      const optionsBox = document.getElementById("optionsBox");
+      const feedbackBox = document.getElementById("feedbackBox");
+      const progressBadge = document.getElementById("progressBadge");
+      const modeBadge = document.getElementById("modeBadge");
+      const verseTooltip = document.getElementById("verseTooltip");
+
+      function renderLibrary() {
+        const gridList = document.getElementById("gridList");
+        gridList.innerHTML = "";
+
+        grids.forEach((grid) => {
+          const card = document.createElement("article");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="top">
+              <span class="number">#${grid.id}</span>
+              <span class="badge">${grid.name}</span>
+            </div>
+            <h4>${grid.name}</h4>
+            <div class="problem">Problème : ${grid.problem}</div>
+            <div class="image">Image de Jésus : ${grid.image}</div>
+            <div class="verse">
+              <button class="verse-link" data-ref="${grid.verse}" data-text="${grid.verseText}">
+                ${grid.verse}
+              </button>
+            </div>
+            <div class="focus">Priorité de prière : ${grid.focus}</div>
+          `;
+          gridList.appendChild(card);
+        });
+
+        document.querySelectorAll(".verse-link").forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const ref = link.dataset.ref;
+            const text = link.dataset.text;
+            showVerseTooltip(ref, text, event);
+          });
+        });
+      }
+
+      function showVerseTooltip(ref, text, event) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        verseTooltip.innerHTML = `
+          <div class="ref">${ref}</div>
+          <div class="text">${text}</div>
+        `;
+        verseTooltip.classList.add("visible");
+        verseTooltip.style.left = `${Math.min(rect.left + 20, window.innerWidth - 340)}px`;
+        verseTooltip.style.top = `${Math.max(20, rect.top - 10)}px`;
+      }
+
+      document.addEventListener("click", (event) => {
+        const isVerseLink = event.target.closest(".verse-link");
+        if (!isVerseLink) {
+          verseTooltip.classList.remove("visible");
+        }
+      });
+
+      function getRandomOptions(correctName) {
+        const wrongs = grids
+          .filter((g) => g.name !== correctName)
+          .map((g) => g.name)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3);
+
+        const options = [...wrongs, correctName].sort(() => Math.random() - 0.5);
+        return options;
+      }
+
+      function showQuestion() {
+        if (!state.quizStarted) return;
+
+        const maxQuestions = Math.min(quizQuestions.length, 10);
+        if (state.currentIndex >= maxQuestions) {
+          finishQuiz();
+          return;
+        }
+
+        const question = quizQuestions[state.currentIndex];
+        state.currentQuestion = question;
+        state.hasAnswered = false;
+        const answers = getRandomOptions(question.answer);
+
+        questionTitle.textContent = `Question ${state.currentIndex + 1}`;
+        questionText.textContent = question.situation;
+        progressBadge.textContent = `Index ${state.currentIndex + 1}`;
+        modeBadge.textContent = `Mode : Quiz`;
+        optionsBox.innerHTML = "";
+        feedbackBox.className = "feedback";
+        feedbackBox.textContent = "";
+
+        answers.forEach((option, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          const letter = ["A", "B", "C", "D"][index];
+          btn.innerHTML = `
+            <span class="letter">${letter}</span>
+            <span class="text">${option}</span>
+          `;
+          btn.addEventListener("click", () => handleAnswer(option, btn));
+          optionsBox.appendChild(btn);
+        });
+      }
+
+      function handleAnswer(selected, buttonEl) {
+        if (state.hasAnswered) return;
+        state.hasAnswered = true;
+
+        const correctName = state.currentQuestion.answer;
+        const allButtons = [...optionsBox.children];
+
+        allButtons.forEach((btn) => {
+          const text = btn.querySelector(".text").textContent.trim();
+          if (text === correctName) {
+            btn.classList.add("correct");
+          }
+          if (text === selected && selected !== correctName) {
+            btn.classList.add("wrong");
+          }
+        });
+
+        if (selected === correctName) {
+          state.score += 10;
+          state.correct += 1;
+          feedbackBox.className = "feedback show correct";
+          feedbackBox.textContent = `✅ Bonne réponse ! La grille ${correctName} correspond bien à cette situation.`;
+        } else {
+          state.lives -= 1;
+          feedbackBox.className = "feedback show wrong";
+          feedbackBox.textContent = `❌ Faux. La bonne grille est ${correctName}. Voici le bon repère : ${getGridDetail(correctName)}`;
+        }
+
+        scoreValue.textContent = state.score;
+        correctValue.textContent = state.correct;
+        livesValue.textContent = state.lives;
+
+        if (state.lives <= 0) {
+          setTimeout(() => finishQuiz(true), 900);
+          return;
+        }
+
+        setTimeout(() => {
+          state.currentIndex += 1;
+          showQuestion();
+        }, 1200);
+      }
+
+      function getGridDetail(name) {
+        const grid = grids.find((g) => g.name === name);
+        return `${grid.name} : ${grid.problem} • ${grid.image} • ${grid.verse}`;
+      }
+
+      function finishQuiz(failed = false) {
+        state.quizStarted = false;
+        const total = Math.min(quizQuestions.length, 10);
+        const percent = Math.round((state.correct / total) * 100);
+
+        questionTitle.textContent = failed ? "Partie terminée" : "Quiz terminé";
+        questionText.textContent = failed
+          ? `Tu as perdu toutes tes vies. Ton score final est ${state.score}. Réessaie pour renforcer ton mémorisation.`
+          : `Félicitations ! Tu as obtenu ${state.score} points avec ${state.correct} bonnes réponses sur ${total}. Taux de réussite : ${percent}%.`;
+
+        optionsBox.innerHTML = "";
+        feedbackBox.className = "feedback show correct";
+        feedbackBox.textContent = failed
+          ? "Le courage de recommencer est le début de la sagesse. Relance le quiz pour progresser."
+          : "La Parole de Dieu est une lumière. Continue à lire, prier et te souvenir des grilles de délivrance.";
+
+        progressBadge.textContent = `Score final`;
+        modeBadge.textContent = `Mode : Résultat`;
+        questionValue.textContent = `${state.currentIndex}/${total}`;
+      }
+
+      function startQuiz() {
+        state.score = 0;
+        state.correct = 0;
+        state.currentIndex = 0;
+        state.lives = 3;
+        state.quizStarted = true;
+        state.hasAnswered = false;
+
+        scoreValue.textContent = state.score;
+        correctValue.textContent = state.correct;
+        livesValue.textContent = state.lives;
+        questionValue.textContent = `0/${Math.min(quizQuestions.length, 10)}`;
+        showQuestion();
+      }
+
+      function resetGame() {
+        state.score = 0;
+        state.correct = 0;
+        state.currentIndex = 0;
+        state.lives = 3;
+        state.quizStarted = false;
+        state.hasAnswered = false;
+
+        scoreValue.textContent = state.score;
+        correctValue.textContent = state.correct;
+        livesValue.textContent = state.lives;
+        questionValue.textContent = `0/10`;
+        progressBadge.textContent = `Index 0`;
+        modeBadge.textContent = `Mode : Quiz`;
+
+        questionTitle.textContent = "Prêt à apprendre ?";
+        questionText.textContent = "Clique sur “Démarrer le quiz” pour commencer. Tu verras une situation spirituelle et tu devras identifier la grille biblique la plus adaptée.";
+        optionsBox.innerHTML = "";
+        feedbackBox.className = "feedback";
+        feedbackBox.textContent = "";
+        verseTooltip.classList.remove("visible");
+      }
+
+      document.getElementById("startQuizBtn").addEventListener("click", startQuiz);
+      document.getElementById("resetBtn").addEventListener("click", resetGame);
+      document.getElementById("showCardsBtn").addEventListener("click", () => {
+        document.getElementById("librarySection").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      renderLibrary();
+      resetGame();
+    </script>
+  </body>
+</html>
