@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e31b23" />
+    <link rel="manifest" href="./app.webmanifest" />
+    <link rel="icon" href="./icone.svg" type="image/svg+xml" />
     <script>
       try {
         if (localStorage.getItem("jeux-spirituels-theme") === "light") {
@@ -269,6 +272,15 @@
     </main>
 
     <footer>Jeux Spirituels · Apprendre, réfléchir et grandir dans la Parole.</footer>
+    <script>
+      if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+            console.error("Inscription du mode hors connexion impossible :", error);
+          });
+        });
+      }
+    </script>
     <script>
       (() => {
         const toggle = document.querySelector("[data-theme-toggle]");

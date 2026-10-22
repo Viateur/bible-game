@@ -1,0 +1,21 @@
+{
+  "id": "./index.html",
+  "name": "Jeux Spirituels",
+  "short_name": "Jeux Spirituels",
+  "description": "Mini-jeux bibliques accessibles hors connexion après installation.",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080808",
+  "theme_color": "#e31b23",
+  "icons": [
+    {
+      "src": "./icone.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e31b23" />
+    <link rel="manifest" href="./app.webmanifest" />
+    <link rel="icon" href="./icone.svg" type="image/svg+xml" />
     <script>
       try {
         if (localStorage.getItem("jeux-spirituels-theme") === "light") {
@@ -68,6 +71,7 @@
       body[data-theme="light"] .menu a { color: #292725; background: rgba(255, 255, 255, 0.78); }
       body[data-theme="light"] .menu a:hover { background: rgba(201, 21, 30, 0.1); color: var(--red); }
       body[data-theme="light"] .theme-toggle { background: #fff2c6; color: #765500; }
+      body[data-theme="light"] .install-app { background: linear-gradient(135deg, #ffe27a, #efb91c); color: #241900; }
       body[data-theme="light"] .hero {
         background: linear-gradient(125deg, #fff, #fff8e7);
         border-color: rgba(184, 134, 11, 0.45);
@@ -244,6 +248,19 @@
         border-color: rgba(227, 27, 35, 0.65);
         color: var(--text);
       }
+
+      .install-app {
+        padding: 10px 14px;
+        border: 1px solid var(--gold);
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+        color: #181208;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .install-app[hidden] { display: none; }
 
       .stats {
         display: grid;
@@ -435,6 +452,8 @@
           <a href="apropos.html">À propos</a>
         </div>
         <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">Mode jour</button>
+        <button class="install-app" type="button" hidden>Installer le jeu</button>
+        <button class="install-app" type="button" hidden>Installer l’application</button>
       </nav>
     </header>
 
@@ -483,6 +502,65 @@
     </div>
 
     <script>
+    <script>
+      if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+            console.error("Inscription du mode hors connexion impossible :", error);
+          });
+        });
+      }
+
+      let installPrompt;
+      const installButton = document.querySelector(".install-app");
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        installPrompt = event;
+        installButton.hidden = false;
+      });
+
+      installButton.addEventListener("click", async () => {
+        if (!installPrompt) return;
+        installPrompt.prompt();
+        await installPrompt.userChoice;
+        installPrompt = null;
+        installButton.hidden = true;
+      });
+      window.addEventListener("appinstalled", () => {
+        installButton.hidden = true;
+        installPrompt = null;
+      });
+    </script>
+      if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+            console.error("Impossible d’activer le mode hors connexion :", error);
+          });
+        });
+      }
+
+      let installPrompt;
+      const installButton = document.querySelector(".install-app");
+
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        installPrompt = event;
+        installButton.hidden = false;
+      });
+
+      installButton.addEventListener("click", async () => {
+        if (!installPrompt) return;
+        installPrompt.prompt();
+        await installPrompt.userChoice;
+        installPrompt = null;
+        installButton.hidden = true;
+      });
+
+      window.addEventListener("appinstalled", () => {
+        installButton.hidden = true;
+        installPrompt = null;
+      });
+
       const games = [
         {
           title: "Jeu : Mon Refuge",
