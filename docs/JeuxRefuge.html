@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jeux : Mon Refuge</title>
+    <title>Jeu : Mon Refuge</title>
     <style>
       :root {
         --bg-1: #080808;
@@ -469,10 +469,10 @@
     </div>
     <div class="container">
       <header>
-        <h1>Jeux : Mon Refuge</h1>
+        <h1>Jeu : Mon Refuge</h1>
         <p class="subtitle">
           Un atelier spirituel de mémorisation des <strong>17 grilles de lecture du salut</strong>, avec des repères bibliques en version <strong>LSG 21</strong>.
-          Clique sur une référence pour lire rapidement le verset dans une infobulle.
+          Clique sur une référence pour afficher le verset dans une infobulle.
         </p>
 
         <div class="toolbar">
@@ -488,7 +488,7 @@
           <div class="value" id="scoreValue">0</div>
         </div>
         <div class="stat">
-          <div class="label">Bonnes</div>
+          <div class="label">Bonnes réponses</div>
           <div class="value" id="correctValue">0</div>
         </div>
         <div class="stat">
@@ -504,12 +504,12 @@
       <section class="game-panel" id="gamePanel">
         <div class="question-meta">
           <span class="badge" id="modeBadge">Mode : Quiz</span>
-          <span class="badge" id="progressBadge">Index 0</span>
+          <span class="badge" id="progressBadge">Question 0/10</span>
         </div>
 
         <div class="question-box">
           <h2 id="questionTitle">Prêt à apprendre ?</h2>
-          <p id="questionText">Clique sur “Démarrer le quiz” pour commencer. Tu verras une situation spirituelle et tu devras identifier la grille biblique la plus adaptée.</p>
+          <p id="questionText">Clique sur « Démarrer le quiz » pour commencer. Une situation spirituelle te sera présentée ; tu devras identifier la grille biblique la plus adaptée.</p>
         </div>
 
         <div class="options" id="optionsBox"></div>
@@ -549,15 +549,15 @@
       ];
 
       const quizQuestions = [
-        { situation: "Tu te sens acculé par des pensées de culpabilité et tu entends des accusations dans ta tête.", answer: "Judiciaire" },
+        { situation: "Tu es assailli par des pensées de culpabilité et tu entends des accusations dans ta tête.", answer: "Judiciaire" },
         { situation: "Tu sens que ton âme est épuisée et que tu as besoin de guérison intérieure et de consolation.", answer: "Thérapeutique" },
         { situation: "Tu subis de la peur, des blocages et l’impression qu’un ennemi s’oppose à ta marche.", answer: "Militaire" },
-        { situation: "Tu te sens rejeté, orphelin, sans sécurité dans ton identité de fils de Dieu.", answer: "Familiale" },
+        { situation: "Tu ressens du rejet et un manque de sécurité dans ton identité d’enfant de Dieu.", answer: "Familiale" },
         { situation: "Tu traverses un cycle d’esclavage spirituel et tu veux sortir du passé pour entrer dans la liberté.", answer: "Exodique" },
         { situation: "Tu as l’impression d’être couvert de honte, sans dignité, et tu veux être revêtu de justice.", answer: "Vestimentaire" },
-        { situation: "Tu traverses le chaos, le découragement et tu veux retrouver un nouveau commencement en Christ.", answer: "Épique" },
-        { situation: "Tu sens des faux semis, des pensées amères et des difficultés à porter du fruit spirituel.", answer: "Agronomique" },
-        { situation: "Tu te sens perdu, sans comprendre la voie à suivre et tu veux la sagesse de Dieu.", answer: "Éducative" },
+        { situation: "Tu traverses le chaos et le découragement, et tu veux prendre un nouveau départ en Christ.", answer: "Épique" },
+        { situation: "Tu perçois de mauvais semis, tu as des pensées amères et tu peines à porter du fruit spirituel.", answer: "Agronomique" },
+        { situation: "Tu as perdu tes repères et tu cherches la sagesse de Dieu pour trouver la voie à suivre.", answer: "Éducative" },
         { situation: "Tu veux retrouver une base solide pour ta vie, car tout semble instable ou désordonné.", answer: "Architecturale" },
         { situation: "Tu as besoin de purifier ton cœur et de te libérer d’une souillure spirituelle.", answer: "Sacerdotale" },
         { situation: "Tu veux te souvenir que tu es un citoyen du Royaume et que tu as des droits en Christ.", answer: "Politique" }
@@ -665,7 +665,7 @@
 
         questionTitle.textContent = `Question ${state.currentIndex + 1}`;
         questionText.textContent = question.situation;
-        progressBadge.textContent = `Index ${state.currentIndex + 1}`;
+        progressBadge.textContent = `Question ${state.currentIndex + 1}/${maxQuestions}`;
         modeBadge.textContent = `Mode : Quiz`;
         optionsBox.innerHTML = "";
         feedbackBox.className = "feedback";
@@ -709,7 +709,7 @@
         } else {
           state.lives -= 1;
           feedbackBox.className = "feedback show wrong";
-          feedbackBox.textContent = `❌ Faux. La bonne grille est ${correctName}. Voici le bon repère : ${getGridDetail(correctName)}`;
+          feedbackBox.textContent = `❌ Mauvaise réponse. La bonne grille est ${correctName}. Voici le repère à retenir : ${getGridDetail(correctName)}`;
         }
 
         scoreValue.textContent = state.score;
@@ -739,7 +739,7 @@
 
         questionTitle.textContent = failed ? "Partie terminée" : "Quiz terminé";
         questionText.textContent = failed
-          ? `Tu as perdu toutes tes vies. Ton score final est ${state.score}. Réessaie pour renforcer ton mémorisation.`
+          ? `Tu as épuisé toutes tes vies. Ton score final est ${state.score}. Réessaie pour renforcer ta mémoire.`
           : `Félicitations ! Tu as obtenu ${state.score} points avec ${state.correct} bonnes réponses sur ${total}. Taux de réussite : ${percent}%.`;
 
         optionsBox.innerHTML = "";
@@ -780,7 +780,7 @@
         correctValue.textContent = state.correct;
         livesValue.textContent = state.lives;
         questionValue.textContent = `0/10`;
-        progressBadge.textContent = `Index 0`;
+        progressBadge.textContent = `Question 0/10`;
         modeBadge.textContent = `Mode : Quiz`;
 
         questionTitle.textContent = "Prêt à apprendre ?";

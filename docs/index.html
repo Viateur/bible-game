@@ -401,7 +401,7 @@
     <script>
       const games = [
         {
-          title: "Jeux : Mon Refuge",
+          title: "Jeu : Mon Refuge",
           file: "JeuxRefuge.html",
           description: "Quiz spirituel sur les 17 grilles de lecture du salut avec références bibliques en version LSG 21.",
           tags: ["Quiz", "Bible", "Délivrance", "LSG 21"],
@@ -411,9 +411,9 @@
         {
           title: "Nouveau jeu",
           file: "#",
-          description: "Crée bientôt un autre mini-jeu : mémoire, citations, combat spirituel, devinette, ou thème biblique.",
-          tags: ["À venir", "Template"],
-          status: "À venir",
+          description: "De nouveaux mini-jeux sont en préparation : mémoire, citations, devinettes et autres thèmes bibliques.",
+          tags: ["À venir", "En préparation"],
+          status: "Prochainement",
           type: "future"
         }
       ];
@@ -425,9 +425,10 @@
         const card = document.createElement("article");
         card.className = "game-card" + (game.type === "future" ? " placeholder" : "");
 
-        const actionHref = game.file === "#" ? "#" : game.file;
-        const actionLabel = game.type === "future" ? "Bientôt" : "Jouer";
-        const secondaryLabel = game.type === "future" ? "Préparer" : "Voir le jeu";
+        const actions = game.type === "future"
+          ? '<span class="mini-btn secondary" aria-disabled="true">En préparation</span>'
+          : `<a class="mini-btn primary" href="${game.file}">Jouer</a>
+            <a class="mini-btn secondary" href="${game.file}">Voir le jeu</a>`;
 
         card.innerHTML = `
           <div>
@@ -441,8 +442,7 @@
           </div>
 
           <div class="actions">
-            <a class="mini-btn primary" href="${actionHref}">${actionLabel}</a>
-            <a class="mini-btn secondary" href="${actionHref}">${secondaryLabel}</a>
+            ${actions}
           </div>
         `;
 
