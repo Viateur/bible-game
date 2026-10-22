@@ -6,19 +6,18 @@
     <title>Jeux Spirituels</title>
     <style>
       :root {
-        --bg-1: #06121b;
-        --bg-2: #0d1d2e;
-        --bg-3: #171b34;
-        --panel: rgba(17, 27, 42, 0.84);
-        --panel-strong: rgba(11, 18, 26, 0.96);
-        --line: rgba(255, 255, 255, 0.08);
-        --text: #edf4ff;
-        --muted: #bfd0ea;
-        --gold: #f4c86a;
-        --gold-soft: #ffd98d;
-        --green: #61db9a;
-        --blue: #8cc8ff;
-        --purple: #c7a7ff;
+        --bg-1: #080808;
+        --bg-2: #151515;
+        --bg-3: #242424;
+        --panel: rgba(25, 25, 25, 0.94);
+        --panel-strong: rgba(10, 10, 10, 0.98);
+        --line: rgba(245, 245, 245, 0.12);
+        --text: #f7f7f5;
+        --muted: #c7c7c2;
+        --gold: #d4af37;
+        --gold-soft: #f5d76e;
+        --red: #c7352c;
+        --gray: #8a8a86;
         --shadow: 0 26px 60px rgba(0, 0, 0, 0.38);
       }
 
@@ -32,8 +31,8 @@
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at top left, rgba(140, 200, 255, 0.16), transparent 25%),
-          radial-gradient(circle at bottom right, rgba(199, 167, 255, 0.14), transparent 28%),
+          radial-gradient(circle at top left, rgba(212, 175, 55, 0.13), transparent 25%),
+          radial-gradient(circle at bottom right, rgba(199, 53, 44, 0.12), transparent 28%),
           linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 42%, var(--bg-3) 100%);
       }
 
@@ -48,7 +47,7 @@
         top: 0;
         z-index: 20;
         backdrop-filter: blur(10px);
-        background: rgba(8, 15, 22, 0.6);
+        background: rgba(8, 8, 8, 0.88);
         border-bottom: 1px solid var(--line);
         margin-bottom: 24px;
       }
@@ -95,7 +94,7 @@
       .hero {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, rgba(12, 21, 33, 0.96), rgba(19, 31, 50, 0.92));
+        background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(35, 35, 35, 0.96));
         border: 1px solid var(--line);
         border-radius: 28px;
         padding: 34px 28px;
@@ -107,7 +106,7 @@
         position: absolute;
         width: 300px;
         height: 300px;
-        background: radial-gradient(circle, rgba(244, 200, 106, 0.17), transparent 70%);
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.2), transparent 70%);
         top: -60px;
         right: -40px;
       }
@@ -153,14 +152,14 @@
       }
 
       .btn.primary {
-        background: linear-gradient(135deg, var(--gold), #f0b63c);
-        color: #181614;
-        box-shadow: 0 14px 24px rgba(244, 200, 106, 0.26);
+        background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+        color: #111;
+        box-shadow: 0 14px 24px rgba(212, 175, 55, 0.24);
       }
 
       .btn.secondary {
-        background: rgba(140, 200, 255, 0.08);
-        border-color: rgba(140, 200, 255, 0.26);
+        background: rgba(245, 245, 245, 0.05);
+        border-color: rgba(245, 245, 245, 0.2);
         color: var(--text);
       }
 
@@ -172,7 +171,7 @@
       }
 
       .stat {
-        background: linear-gradient(180deg, rgba(20, 31, 47, 0.96), rgba(13, 20, 31, 0.96));
+        background: linear-gradient(180deg, rgba(35, 35, 35, 0.96), rgba(17, 17, 17, 0.98));
         border: 1px solid var(--line);
         border-radius: 20px;
         padding: 18px 16px;
@@ -209,7 +208,7 @@
         flex-direction: column;
         justify-content: space-between;
         gap: 18px;
-        background: linear-gradient(180deg, rgba(19, 29, 43, 0.97), rgba(12, 18, 29, 0.97));
+        background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(15, 15, 15, 0.98));
         border: 1px solid var(--line);
         border-radius: 22px;
         padding: 20px 18px;
@@ -231,8 +230,8 @@
         align-self: flex-start;
         padding: 6px 10px;
         border-radius: 999px;
-        background: rgba(244, 200, 106, 0.09);
-        border: 1px solid rgba(244, 200, 106, 0.32);
+        background: rgba(212, 175, 55, 0.12);
+        border: 1px solid rgba(212, 175, 55, 0.4);
         color: var(--gold-soft);
         font-size: 0.7rem;
         font-weight: 800;
@@ -261,9 +260,9 @@
         display: inline-flex;
         padding: 5px 9px;
         border-radius: 999px;
-        background: rgba(140, 200, 255, 0.08);
-        border: 1px solid rgba(140, 200, 255, 0.2);
-        color: #dfeeff;
+        background: rgba(245, 245, 245, 0.05);
+        border: 1px solid rgba(245, 245, 245, 0.16);
+        color: #ededeb;
         font-size: 0.72rem;
         font-weight: 700;
       }
@@ -287,12 +286,12 @@
       }
 
       .mini-btn.primary {
-        background: linear-gradient(135deg, var(--gold), #f0b63c);
-        color: #1a170f;
+        background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+        color: #111;
       }
 
       .mini-btn.secondary {
-        border: 1px solid rgba(255,255,255,0.12);
+        border: 1px solid rgba(245,245,245,0.18);
         color: var(--text);
         background: rgba(255,255,255,0.02);
       }
@@ -303,7 +302,7 @@
 
       .promo {
         margin-top: 32px;
-        background: linear-gradient(135deg, rgba(28, 41, 58, 0.96), rgba(17, 26, 38, 0.96));
+        background: linear-gradient(135deg, rgba(38, 38, 38, 0.96), rgba(17, 17, 17, 0.98));
         border: 1px solid var(--line);
         border-radius: 24px;
         padding: 22px 20px;
@@ -333,8 +332,8 @@
     </style>
   </head>
   <body>
-    <div class="topbar">
-      <div class="nav">
+    <header class="topbar">
+      <nav class="nav" aria-label="Navigation principale">
         <div class="brand">Jeux Spirituels</div>
         <div class="menu">
           <a href="#accueil">Accueil</a>
@@ -342,8 +341,8 @@
           <a href="#a-venir">À venir</a>
           <a href="apropos.html">À propos</a>
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
 
     <div class="container" id="accueil">
       <section class="hero">
